@@ -16,10 +16,12 @@ jobs:
       - name: Log in to AWS ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+        with:
+          region: ap-south-1  # Replace with your AWS region
 
       - name: Build and push Docker image
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/your-repository-name:latest .
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sre-project:latest .
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sre-project:latest
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
