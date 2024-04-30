@@ -22,7 +22,7 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ACCOUNT_ID }}/your-repository-name:latest . --push
+        docker buildx build --platform linux/amd64,linux/arm64 -t ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ACCOUNT_ID }}/sre-project:latest . --push
       env:
         AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
