@@ -3,21 +3,23 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master  # You can adjust the branch as needed
+      - master  # Adjust as needed
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set AWS Region
-        run: aws configure set region ap-south-1  # Replace with your AWS region
-
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set region ${{ secrets.AWS_REGION }}
+
       - name: Log in to AWS ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
           registry-type: private
@@ -28,9 +30,4 @@ jobs:
         run: |
           docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sre-project:latest .
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/sre-project:latest
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
