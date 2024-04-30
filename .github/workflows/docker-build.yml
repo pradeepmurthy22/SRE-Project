@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Set AWS Region
+        run: aws configure set region ap-south-1  # Replace with your AWS region
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -17,7 +20,9 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
-          region: ap-south-1  # Replace with your AWS region
+          registry-type: private
+          mask-password: true
+          skip-logout: false
 
       - name: Build and push Docker image
         run: |
