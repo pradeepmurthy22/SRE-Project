@@ -32,7 +32,7 @@ app.get('/metrics', async (req, res) => {
 });
 
 // Start the server
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 var server = app.listen(port, function(req, res) {
   console.log("Catch the action at http://localhost:" + port);
 });
