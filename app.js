@@ -20,9 +20,15 @@ const customMetric = new promClient.Counter({
 });
 
 // Expose a /metrics endpoint to expose metrics
-app.get('/metrics', (req, res) => {
-  res.set('Content-Type', promClient.register.contentType);
-  res.end(promClient.register.metrics());
+app.get('/metrics', async (req, res) => {
+  try {
+    const metrics = await promClient.register.metrics();
+    res.set('Content-Type', promClient.register.contentType);
+    res.end(metrics);
+  } catch (error) {
+    console.error('Error generating metrics:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
 
 // Start the server
