@@ -10,6 +10,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+EUN npm install prom-client
+
 # Copy the rest of the application code
 COPY . .
 
